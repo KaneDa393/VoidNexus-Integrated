@@ -42,22 +42,26 @@ local VoidNexusLib = {
 }
 
 --Feather Icons
-local Icons = {}
-local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json")).icons
-end)
+	local Icons = {}
+	local Success, Response = pcall(function()
+		-- Updated URL for Lucide Icons (LucideBlox)
+		local response = game:HttpGet("https://raw.githubusercontent.com/xHeptc/Lucide-Roblox/main/src/Lucide.json")
+		Icons = HttpService:JSONDecode(response)
+	end)
+	
+	if not Success then
+		warn("\nVoidNexus Library - Failed to load Icons. Error code: " .. tostring(Response) .. "\n")
+		-- Fallback to empty table to prevent further errors
+		Icons = {}
+	end	
 
-if not Success then
-	warn("\nVoidNexus Library - Failed to load Feather Icons. Error code: " .. Response .. "\n")
-end	
-
-local function GetIcon(IconName)
-	if Icons[IconName] ~= nil then
-		return Icons[IconName]
-	else
+	local function GetIcon(IconName)
+		if IconName == nil or IconName == "" then return nil end
+		if Icons and Icons[IconName] ~= nil then
+			return Icons[IconName]
+		end
 		return nil
 	end
-end
 
 local useStudio = RunService:IsStudio() or false
 local VoidNexusGUI = Instance.new("ScreenGui")
