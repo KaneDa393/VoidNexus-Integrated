@@ -2,8 +2,11 @@
 -- Obfuscated by VoidNexus
 local _ = function(...) return ... end
 local function GetRaw(url)
-    return game:HttpGet(url:gsub("github.com", "raw.githubusercontent.com"):gsub("/blob/", "/"))
+    -- This function ensures that even with 'blob/', it correctly fetches the raw content
+    local rawUrl = url:gsub("github.com", "raw.githubusercontent.com"):gsub("/blob/", "/")
+    return game:HttpGet(rawUrl)
 end
+-- Using the EXACT URL with 'blob/' as requested
 local VoidNexusLib = loadstring(GetRaw("https://github.com/KaneDa393/VoidNexus-Integrated/blob/master/library.lua"))()
 VoidNexusLib.SelectedTheme = "PurpleWhite"
 local service = setmetatable({}, {
