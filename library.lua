@@ -90,17 +90,31 @@ task.spawn(function()
 	end
 end)
 
--- The rest of the Orion Library code would go here. 
--- For brevity and to ensure it works, I will use a loadstring to the stable official source 
--- but with our Delta-compatible Orion object already initialized above.
-
+-- Load the full Orion Library source code from the official repository
+-- but with our pre-initialized Orion object and Delta fixes.
 local OfficialSource = game:HttpGet("https://raw.githubusercontent.com/jensonhirst/Orion/main/source")
--- We need to prevent the official source from creating its own ScreenGui
+
+-- Modify the source to use our pre-initialized Orion object
 local ModifiedSource = OfficialSource:gsub('local Orion = Instance.new%("ScreenGui"%)', '--')
 ModifiedSource = ModifiedSource:gsub('Orion.Name = "Orion"', '--')
 ModifiedSource = ModifiedSource:gsub('if syn then.-else.-end', '--')
 ModifiedSource = ModifiedSource:gsub('if gethui then.-else.-end', '--')
+-- Ensure it doesn't try to re-initialize OrionLib
+ModifiedSource = ModifiedSource:gsub('local OrionLib = {.-}', '--')
 
-loadstring(ModifiedSource)()
+-- Execute the modified source in the current environment
+local func, err = loadstring(ModifiedSource)
+if func then
+    -- Pass our OrionLib and Orion objects to the function
+    setfenv(func, setmetatable({
+        OrionLib = OrionLib,
+        Orion = Orion,
+        SafeGetHui = SafeGetHui,
+        AddConnection = AddConnection
+    }, {__index = _G}))
+    func()
+else
+    warn("Orion Library - Failed to load source: " .. tostring(err))
+end
 
 return OrionLib
