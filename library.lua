@@ -41,25 +41,8 @@ local VoidNexusLib = {
 	SaveCfg = false
 }
 
---Feather Icons
-	local Icons = {}
-	local Success, Response = pcall(function()
-		-- Updated URL for Lucide Icons (LucideBlox)
-		local response = game:HttpGet("https://raw.githubusercontent.com/xHeptc/Lucide-Roblox/main/src/Lucide.json")
-		Icons = HttpService:JSONDecode(response)
-	end)
-	
-	if not Success then
-		warn("\nVoidNexus Library - Failed to load Icons. Error code: " .. tostring(Response) .. "\n")
-		-- Fallback to empty table to prevent further errors
-		Icons = {}
-	end	
-
+	-- Icons disabled for stability
 	local function GetIcon(IconName)
-		if IconName == nil or IconName == "" then return nil end
-		if Icons and Icons[IconName] ~= nil then
-			return Icons[IconName]
-		end
 		return nil
 	end
 
@@ -488,10 +471,10 @@ function VoidNexusLib:MakeWindow(WindowConfig)
 	local TabFunction = {}
 	function TabFunction:MakeTab(TabConfig)
 		TabConfig = TabConfig or {Name = "Tab", Icon = ""}
-		local TabFrame = SetChildren(SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 0, 30), Parent = TabHolder}), {
-			AddThemeObject(SetProps(MakeElement("Image", TabConfig.Icon), {AnchorPoint = Vector2.new(0, 0.5), Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(0, 10, 0.5, 0), ImageTransparency = 0.4, Name = "Ico"}), "Text"),
-			AddThemeObject(SetProps(MakeElement("Label", TabConfig.Name, 14), {Size = UDim2.new(1, -35, 1, 0), Position = UDim2.new(0, 35, 0, 0), Font = Enum.Font.GothamSemibold, TextTransparency = 0.4, Name = "Title"}), "Text")
-		})
+			local TabFrame = SetChildren(SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 0, 30), Parent = TabHolder}), {
+				AddThemeObject(SetProps(MakeElement("Image", ""), {Visible = false, AnchorPoint = Vector2.new(0, 0.5), Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 10, 0.5, 0), ImageTransparency = 1, Name = "Ico"}), "Text"),
+				AddThemeObject(SetProps(MakeElement("Label", TabConfig.Name, 14), {Size = UDim2.new(1, -20, 1, 0), Position = UDim2.new(0, 10, 0, 0), Font = Enum.Font.GothamSemibold, TextTransparency = 0.4, Name = "Title"}), "Text")
+			})
 
 		local Container = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 5), {Size = UDim2.new(1, -150, 1, -50), Position = UDim2.new(0, 150, 0, 50), Parent = MainWindow, Visible = false, Name = "ItemContainer"}), {MakeElement("List", 0, 6), MakeElement("Padding", 15, 10, 10, 15)}), "Divider")
 		AddConnection(Container.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"), function() Container.CanvasSize = UDim2.new(0, 0, 0, Container.UIListLayout.AbsoluteContentSize.Y + 30) end)
