@@ -2,10 +2,7 @@
 -- Obfuscated by VoidNexus
 local _ = function(...) return ... end
 local function GetRaw(url)
-    if url:find("github.com") and not url:find("raw.githubusercontent.com") then
-        url = url:gsub("github.com", "raw.githubusercontent.com"):gsub("/blob/", "/")
-    end
-    return game:HttpGet(url)
+    return game:HttpGet(url:gsub("github.com", "raw.githubusercontent.com"):gsub("/blob/", "/"))
 end
 local VoidNexusLib = loadstring(GetRaw("https://github.com/KaneDa393/VoidNexus-Integrated/blob/master/library.lua"))()
 VoidNexusLib.SelectedTheme = "PurpleWhite"
