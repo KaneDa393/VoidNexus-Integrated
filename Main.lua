@@ -2213,3 +2213,5 @@ do
 		Time = 5
 	})
 end
+
+print("VoidNexus UI (Orion) has been successfully loaded from GitHub!")
