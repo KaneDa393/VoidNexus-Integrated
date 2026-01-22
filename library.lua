@@ -27,23 +27,23 @@ local OrionLib = {
 
 -- Safe gethui function for Delta and other executors
 local function SafeGetHui()
-    if gethui then return gethui() end
-    if game:GetService("CoreGui"):FindFirstChild("RobloxGui") then return game:GetService("CoreGui") end
-    return game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local success, result = pcall(function()
+        if gethui then return gethui() end
+        if game:GetService("CoreGui"):FindFirstChild("RobloxGui") then return game:GetService("CoreGui") end
+        return game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    end)
+    if success then return result end
+    return game:GetService("CoreGui")
 end
 
--- Feather Icons
+-- Feather Icons (Silent fail to avoid error messages)
 local Icons = {}
-local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/xHeptc/Lucide-Roblox/main/src/modules/util/icons.json")).icons
+pcall(function()
+	Icons = HttpService:JSONDecode(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Lucide-Roblox/main/src/modules/util/icons.json")).icons
 end)
 
-if not Success then
-	warn("\nOrion Library - Failed to load Feather Icons. Error code: " .. tostring(Response) .. "\n")
-end	
-
 local function GetIcon(IconName)
-	if Icons[IconName] ~= nil then
+	if Icons and Icons[IconName] ~= nil then
 		return Icons[IconName]
 	else
 		return nil
@@ -64,7 +64,7 @@ pcall(function()
     -- Remove duplicate GUIs
     for _, Interface in ipairs(GUIParent:GetChildren()) do
         if Interface.Name == Orion.Name and Interface ~= Orion then
-            Interface:Destroy()
+            pcall(function() Interface:Destroy() end)
         end
     end
     
@@ -83,38 +83,44 @@ end
 
 task.spawn(function()
 	while (OrionLib:IsRunning()) do
-		wait()
+		task.wait(1)
 	end
 	for _, Connection in next, OrionLib.Connections do
-		Connection:Disconnect()
+		pcall(function() Connection:Disconnect() end)
 	end
 end)
 
--- Load the full Orion Library source code from the official repository
--- but with our pre-initialized Orion object and Delta fixes.
-local OfficialSource = game:HttpGet("https://raw.githubusercontent.com/jensonhirst/Orion/main/source")
+-- Load the full Orion Library source code
+local success, OfficialSource = pcall(function()
+    return game:HttpGet("https://raw.githubusercontent.com/jensonhirst/Orion/main/source")
+end)
 
--- Modify the source to use our pre-initialized Orion object
-local ModifiedSource = OfficialSource:gsub('local Orion = Instance.new%("ScreenGui"%)', '--')
-ModifiedSource = ModifiedSource:gsub('Orion.Name = "Orion"', '--')
-ModifiedSource = ModifiedSource:gsub('if syn then.-else.-end', '--')
-ModifiedSource = ModifiedSource:gsub('if gethui then.-else.-end', '--')
--- Ensure it doesn't try to re-initialize OrionLib
-ModifiedSource = ModifiedSource:gsub('local OrionLib = {.-}', '--')
-
--- Execute the modified source in the current environment
-local func, err = loadstring(ModifiedSource)
-if func then
-    -- Pass our OrionLib and Orion objects to the function
-    setfenv(func, setmetatable({
-        OrionLib = OrionLib,
-        Orion = Orion,
-        SafeGetHui = SafeGetHui,
-        AddConnection = AddConnection
-    }, {__index = _G}))
-    func()
+if success then
+    -- Modify the source to use our pre-initialized Orion object and avoid re-initialization errors
+    local ModifiedSource = OfficialSource
+    ModifiedSource = ModifiedSource:gsub('local Orion = Instance.new%("ScreenGui"%)', '--')
+    ModifiedSource = ModifiedSource:gsub('Orion.Name = "Orion"', '--')
+    ModifiedSource = ModifiedSource:gsub('if syn then.-else.-end', '--')
+    ModifiedSource = ModifiedSource:gsub('if gethui then.-else.-end', '--')
+    
+    -- Execute the modified source
+    local func, err = loadstring(ModifiedSource)
+    if func then
+        local env = setmetatable({
+            OrionLib = OrionLib,
+            Orion = Orion,
+            SafeGetHui = SafeGetHui,
+            AddConnection = AddConnection,
+            GetIcon = GetIcon,
+            Icons = Icons
+        }, {__index = _G})
+        setfenv(func, env)
+        pcall(func)
+    else
+        warn("Orion Library - Loadstring Error: " .. tostring(err))
+    end
 else
-    warn("Orion Library - Failed to load source: " .. tostring(err))
+    warn("Orion Library - Failed to fetch source from GitHub")
 end
 
 return OrionLib
