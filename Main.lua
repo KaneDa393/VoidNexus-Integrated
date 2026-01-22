@@ -684,7 +684,8 @@ do
 		Name = "Void Nexus",
 		HidePremium = false,
 		SaveConfig = true,
-		ConfigFolder = "VoidNexusConfig"
+		ConfigFolder = "VoidNexusConfig",
+		IntroEnabled = false  -- Disable intro for faster loading
 	})
 	local MovementsTab = Window:MakeTab({
 		Name = "Movements",

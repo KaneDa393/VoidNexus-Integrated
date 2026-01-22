@@ -62,33 +62,42 @@ end
 local useStudio = RunService:IsStudio() or false
 local VoidNexusGUI = Instance.new("ScreenGui")
 VoidNexusGUI.Name = "VoidNexusUI"
+VoidNexusGUI.ResetOnSpawn = false
+VoidNexusGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+VoidNexusGUI.DisplayOrder = 999
 
-getgenv().gethui = function() return game.CoreGui end
-local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
-local GUIParent = gethui and gethui() or (game.CoreGui or game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-VoidNexusGUI.Parent = GUIParent
-ProtectGui(VoidNexusGUI)
-
-if gethui then
-	for _, Interface in ipairs(gethui():GetChildren()) do
-		if Interface.Name == VoidNexusGUI.Name and Interface ~= VoidNexusGUI then
-			Interface:Destroy()
-		end
-	end
-else
-	for _, Interface in ipairs(game.CoreGui:GetChildren()) do
-		if Interface.Name == VoidNexusGUI.Name and Interface ~= VoidNexusGUI then
-			Interface:Destroy()
-		end
-	end
+-- Improved gethui function for better executor compatibility
+local function SafeGetHui()
+    if gethui then
+        local success, result = pcall(gethui)
+        if success and result then
+            return result
+        end
+    end
+    -- Fallback to CoreGui or PlayerGui
+    local success, coreGui = pcall(function() return game:GetService("CoreGui") end)
+    if success and coreGui then
+        return coreGui
+    end
+    return game.Players.LocalPlayer:WaitForChild("PlayerGui")
 end
 
+local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
+local GUIParent = SafeGetHui()
+VoidNexusGUI.Parent = GUIParent
+pcall(ProtectGui, VoidNexusGUI)
+
+-- Remove duplicate GUIs
+pcall(function()
+    for _, Interface in ipairs(GUIParent:GetChildren()) do
+        if Interface.Name == VoidNexusGUI.Name and Interface ~= VoidNexusGUI then
+            Interface:Destroy()
+        end
+    end
+end)
+
 function VoidNexusLib:IsRunning()
-	if gethui then
-		return VoidNexusGUI.Parent == gethui()
-	else
-		return VoidNexusGUI.Parent == game:GetService("CoreGui")
-	end
+    return VoidNexusGUI and VoidNexusGUI.Parent ~= nil
 end
 
 local function AddConnection(Signal, Function)
@@ -447,22 +456,30 @@ function VoidNexusLib:MakeWindow(WindowConfig)
 	MakeDraggable(DragPoint, MainWindow)
 
 	local function LoadSequence()
-		MainWindow.Visible = false
-		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {Parent = VoidNexusGUI, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 0, 0.4, 0), Size = UDim2.new(0, 28, 0, 28), ImageColor3 = Color3.fromRGB(255, 255, 255), ImageTransparency = 1})
-		local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 14), {Parent = VoidNexusGUI, Size = UDim2.new(1, 0, 1, 0), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 19, 0.5, 0), TextXAlignment = Enum.TextXAlignment.Center, Font = Enum.Font.GothamBold, TextTransparency = 1})
-		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
-		wait(0.8)
-		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
-		wait(0.3)
-		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
-		wait(2)
-		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
+		pcall(function()
+			MainWindow.Visible = false
+			local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {Parent = VoidNexusGUI, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 0, 0.4, 0), Size = UDim2.new(0, 28, 0, 28), ImageColor3 = Color3.fromRGB(255, 255, 255), ImageTransparency = 1})
+			local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 14), {Parent = VoidNexusGUI, Size = UDim2.new(1, 0, 1, 0), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 19, 0.5, 0), TextXAlignment = Enum.TextXAlignment.Center, Font = Enum.Font.GothamBold, TextTransparency = 1})
+			TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
+			wait(0.8)
+			TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
+			wait(0.3)
+			TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
+			wait(2)
+			TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
+			wait(0.3)
+			LoadSequenceLogo:Destroy()
+			LoadSequenceText:Destroy()
+		end)
+		-- Always show the main window, even if intro fails
 		MainWindow.Visible = true
-		LoadSequenceLogo:Destroy()
-		LoadSequenceText:Destroy()
 	end 
 
-	if WindowConfig.IntroEnabled then LoadSequence() end	
+	if WindowConfig.IntroEnabled then 
+		LoadSequence() 
+	else
+		MainWindow.Visible = true
+	end	
 
 	local TabFunction = {}
 	function TabFunction:MakeTab(TabConfig)
