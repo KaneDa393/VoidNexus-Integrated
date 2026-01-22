@@ -70,18 +70,19 @@ local function SafeGetHui()
 end
 
 local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
-local GUIParent = SafeGetHui()
-VoidNexusGUI.Parent = GUIParent
-pcall(ProtectGui, VoidNexusGUI)
-
--- Remove duplicate GUIs
-pcall(function()
-    for _, Interface in ipairs(GUIParent:GetChildren()) do
-        if Interface.Name == VoidNexusGUI.Name and Interface ~= VoidNexusGUI then
-            Interface:Destroy()
-        end
-    end
-end)
+	local GUIParent = SafeGetHui()
+	VoidNexusGUI.Parent = GUIParent
+	
+	-- Remove duplicate GUIs
+	pcall(function()
+	    for _, Interface in ipairs(GUIParent:GetChildren()) do
+	        if Interface.Name == VoidNexusGUI.Name and Interface ~= VoidNexusGUI then
+	            Interface:Destroy()
+	        end
+	    end
+	end)
+	
+	pcall(ProtectGui, VoidNexusGUI)
 
 function VoidNexusLib:IsRunning()
     return VoidNexusGUI and VoidNexusGUI.Parent ~= nil
@@ -424,9 +425,9 @@ function VoidNexusLib:MakeWindow(WindowConfig)
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {Size = UDim2.new(1, -30, 2, 0), Position = UDim2.new(0, 25, 0, -24), Font = Enum.Font.GothamBlack, TextSize = 20}), "Text")
 	local WindowTopBarLine = AddThemeObject(SetProps(MakeElement("Frame"), {Size = UDim2.new(1, 0, 0, 1), Position = UDim2.new(0, 0, 1, -1)}), "Stroke")
 
-	local MainWindow = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
-		Parent = VoidNexusGUI, Position = UDim2.new(0.5, -307, 0.5, -172), Size = UDim2.new(0, 615, 0, 344), ClipsDescendants = true
-	}), {
+		local MainWindow = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
+			Parent = VoidNexusGUI, Position = UDim2.new(0.5, -307, 0.5, -172), Size = UDim2.new(0, 615, 0, 344), ClipsDescendants = true, Visible = true
+		}), {
 		SetChildren(SetProps(MakeElement("TFrame"), {Size = UDim2.new(1, 0, 0, 50), Name = "TopBar"}), {
 			WindowName, WindowTopBarLine,
 			AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 7), {Size = UDim2.new(0, 70, 0, 30), Position = UDim2.new(1, -90, 0, 10)}), {

@@ -1,9 +1,12 @@
 
 -- Obfuscated by VoidNexus
 local _ = function(...) return ... end
-local LIBRARY_URL = "https://raw.githubusercontent.com/KaneDa393/VoidNexus-Integrated/master/library.lua"
+local function GetRaw(url)
+    return game:HttpGet(url:gsub("github.com", "raw.githubusercontent.com"):gsub("/blob/", "/"))
+end
+local LIBRARY_URL = "https://github.com/KaneDa393/VoidNexus-Integrated/blob/master/library.lua"
 local MAIN_URL = "https://raw.githubusercontent.com/KaneDa393/VoidNexus-Integrated/master/Main.lua"
-local VoidNexusLib = loadstring(game:HttpGet(LIBRARY_URL))()
+local VoidNexusLib = loadstring(GetRaw(LIBRARY_URL))()
 VoidNexusLib.SelectedTheme = "RedPink"
 local VALID_KEYS = {"test"}
 local DISCORD_LINK = "https://discord.gg/yourserver"
@@ -38,7 +41,7 @@ local Window = VoidNexusLib:MakeWindow({
     Name = "VoidNexus Key System",
     HidePremium = true,
     SaveConfig = false,
-    IntroEnabled = true,
+    IntroEnabled = false,
     IntroText = "VoidNexus",
     KeyToOpenWindow = "M"
 })
