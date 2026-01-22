@@ -1,7 +1,13 @@
 
 -- Obfuscated by VoidNexus
 local _ = function(...) return ... end
-local VoidNexusLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaneDa393/VoidNexus-Integrated/master/library.lua"))()
+local function GetRaw(url)
+    if url:find("github.com") and not url:find("raw.githubusercontent.com") then
+        url = url:gsub("github.com", "raw.githubusercontent.com"):gsub("/blob/", "/")
+    end
+    return game:HttpGet(url)
+end
+local VoidNexusLib = loadstring(GetRaw("https://github.com/KaneDa393/VoidNexus-Integrated/blob/master/library.lua"))()
 VoidNexusLib.SelectedTheme = "PurpleWhite"
 local service = setmetatable({}, {
 	__index = function(self, k)
