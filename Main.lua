@@ -1,9 +1,6 @@
---[[
-	==== VOID NEXUS ====
-		Main Script
-		Based on Suisei Hub
-]]
 
+-- Obfuscated by VoidNexus
+local _ = function(...) return ... end
 local VoidNexusLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaneDa393/VoidNexus-Integrated/master/library.lua"))()
 VoidNexusLib.SelectedTheme = "PurpleWhite"
 local service = setmetatable({}, {
@@ -13,14 +10,11 @@ local service = setmetatable({}, {
 		return s
 	end,
 })
-
 local loop = Instance.new("BindableEvent")
 service.RunService.Heartbeat:Connect(function(dt)
 	loop:Fire(dt)
 end)
-
 do
-	--// USELESS UTILS
 	function hn(func, ...)
 		if (service.RunService:IsStudio()) then print'hn call' end
 		if (coroutine.status(task.spawn(hn, func, ...)) == "dead") then return end
@@ -30,8 +24,6 @@ do
 		if (depth >= 80) then return pcall(func, ...) end
 		task.defer(sn, depth + 1, func, ...)
 	end
-
-	--// FUNCTIONS/VARIABLES/UTILS
 	local get = game.FindFirstChild
 	local cget = game.FindFirstChildOfClass
 	local waitc = game.WaitForChild
@@ -204,7 +196,6 @@ do
 		end
 		getLocalRoot().CFrame = CFrame.new(1e4, 1e4 + 10, 1e4)
 	end
-
 	local function ragdoll()
 		local args = {
 			[1] = getLocalRoot(),
@@ -212,12 +203,9 @@ do
 		}
 		service.ReplicatedStorage.CharacterEvents.RagdollRemote:FireServer(unpack(args))
 	end
-
 	local function BlackBoxpos()
 		return CFrame.new(32e32, 32e32, 32e32)
 	end
-
-	--// BLOBMAN
 	local function getBlobman()
 		local v = get(getInv(), "CreatureBlobman", true)
 		if (not v) then
@@ -286,7 +274,6 @@ do
 		ungrab(target)
 		blobGrab(blob, target, side)
 	end
-
 	local function IsFriend(p)
 		if (not p or not p.UserId or not getLocalPlayer()) then return end
 		return getLocalPlayer():IsFriendsWith(p.UserId)
@@ -297,7 +284,6 @@ do
 	local function IsInOwnedPlot(p)
 		return p.InOwnedPlot.Value
 	end
-
 	local function getPlayerFromName(name)
 		local tplayer = nil
 		local sname = name:lower()
@@ -313,7 +299,6 @@ do
 		end
 		return tplayer
 	end
-
 	local function playSound(id)
 		task.spawn(function()
 			local s = Instance.new("Sound", service.JointsService)
@@ -322,7 +307,6 @@ do
 			return s
 		end)
 	end
-
 	local function Snipefunc(root, func, ...)
 		local pos = getLocalRoot().CFrame
 		task.spawn(function(...)
@@ -341,8 +325,6 @@ do
 			for _, p in pairs(parts) do get(getLocalChar(), p).CanCollide = true end
 		end, ...)
 	end
-
-	--// CONFIG
 	local config = {
 		Movements = {
 			CrouchSpeedHack = {
@@ -677,7 +659,6 @@ do
 			}
 		},
 	}
-
 	local __esp = {}
 	local function updateESP()
 		for i = #__esp, 1, -1 do
@@ -699,87 +680,70 @@ do
 		h.Name = "__esp.voidnexus"
 		table.insert(__esp, h)
 	end
-
-	--// CREATE UI
 	local Window = VoidNexusLib:MakeWindow({
 		Name = "Void Nexus",
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "VoidNexusConfig"
 	})
-
-	--// TABS
 	local MovementsTab = Window:MakeTab({
 		Name = "Movements",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local PlayersTab = Window:MakeTab({
 		Name = "Players",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local VisualsTab = Window:MakeTab({
 		Name = "Visuals",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local CombatsTab = Window:MakeTab({
 		Name = "Combats",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local AurasTab = Window:MakeTab({
 		Name = "Auras",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local GrabsTab = Window:MakeTab({
 		Name = "Grabs",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local MiscsTab = Window:MakeTab({
 		Name = "Miscs",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local BlobmanTab = Window:MakeTab({
 		Name = "Blobman",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local SnipesTab = Window:MakeTab({
 		Name = "Snipes",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local TrollsTab = Window:MakeTab({
 		Name = "Trolls",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
 	local SettingsTab = Window:MakeTab({
 		Name = "Settings",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
-	--// MOVEMENTS TAB
 	local MovementsSection = MovementsTab:AddSection({
 		Name = "Movement Options"
 	})
-
 	MovementsTab:AddSlider({
 		Name = "Speed (Crouching)",
 		Min = 0,
@@ -793,7 +757,6 @@ do
 			config.Movements.CrouchSpeedHack.Value = Value
 		end
 	})
-
 	MovementsTab:AddToggle({
 		Name = "Loop Speed (Crouching)",
 		Default = false,
@@ -801,7 +764,6 @@ do
 			config.Movements.CrouchSpeedHack.Loop = Value
 		end
 	})
-
 	MovementsTab:AddSlider({
 		Name = "Jump Power",
 		Min = 0,
@@ -815,7 +777,6 @@ do
 			config.Movements.JumpPower.Value = Value
 		end
 	})
-
 	MovementsTab:AddToggle({
 		Name = "Freeze",
 		Default = false,
@@ -826,7 +787,6 @@ do
 			end
 		end
 	})
-
 	MovementsTab:AddToggle({
 		Name = "Infinite Jump",
 		Default = false,
@@ -834,7 +794,6 @@ do
 			config.Movements.Infjump.Value = Value
 		end
 	})
-
 	MovementsTab:AddToggle({
 		Name = "Fly",
 		Default = false,
@@ -842,7 +801,6 @@ do
 			config.Movements.Fly.Value = Value
 		end
 	})
-
 	MovementsTab:AddToggle({
 		Name = "Noclip",
 		Default = false,
@@ -850,93 +808,78 @@ do
 			config.Movements.Noclip.Value = Value
 		end
 	})
-
 	local TeleportsSection = MovementsTab:AddSection({
 		Name = "Teleports"
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Barn",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.Barn.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Blue House",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.BlueBouse.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Factory",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.Factory.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Glass House",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.GlassHouse.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Japanese House",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.JapaneseHouse.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Pink Roof House",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.PinkRoofHouse.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Spooky House",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.SpookyHouse.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Tudor House",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.TudorHouse.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Train Cave",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.TrainCave.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Small Secret Cave",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.SmallSecretCave.CFrame
 		end
 	})
-
 	MovementsTab:AddButton({
 		Name = "Teleport to Big Secret Cave",
 		Callback = function()
 			getLocalRoot().CFrame = config.Movements.Teleports.BigSecretCave.CFrame
 		end
 	})
-
-	--// PLAYERS TAB
 	local PlayersSection = PlayersTab:AddSection({
 		Name = "Player Options"
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Anti-Detect",
 		Default = false,
@@ -944,7 +887,6 @@ do
 			config.Players.AntiDetect.Value = Value
 		end
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Anti-Ragdoll",
 		Default = false,
@@ -952,7 +894,6 @@ do
 			config.Players.AntiRagdoll.Value = Value
 		end
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Anti-Touch",
 		Default = false,
@@ -960,7 +901,6 @@ do
 			config.Players.AntiTouch.Value = Value
 		end
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Anti-Banana",
 		Default = false,
@@ -968,7 +908,6 @@ do
 			config.Players.AntiBanana.Value = Value
 		end
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Auto Slot",
 		Default = false,
@@ -976,7 +915,6 @@ do
 			config.Players.AutoSlot.Value = Value
 		end
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Ragdoll",
 		Default = false,
@@ -984,7 +922,6 @@ do
 			config.Players.Ragdoll.Value = Value
 		end
 	})
-
 	PlayersTab:AddToggle({
 		Name = "Anti-Gucci",
 		Default = false,
@@ -992,12 +929,9 @@ do
 			config.Players.AntiGucci.Value = Value
 		end
 	})
-
-	--// VISUALS TAB
 	local VisualsSection = VisualsTab:AddSection({
 		Name = "Visual Options"
 	})
-
 	VisualsTab:AddToggle({
 		Name = "ESP",
 		Default = false,
@@ -1005,7 +939,6 @@ do
 			config.Visuals.ESP.Value = Value
 		end
 	})
-
 	VisualsTab:AddSlider({
 		Name = "FOV",
 		Min = 1,
@@ -1018,7 +951,6 @@ do
 			config.Visuals.FOV.Value = Value
 		end
 	})
-
 	VisualsTab:AddToggle({
 		Name = "Third Person (TPS)",
 		Default = false,
@@ -1026,7 +958,6 @@ do
 			config.Visuals.TPS.Value = Value
 		end
 	})
-
 	VisualsTab:AddToggle({
 		Name = "Spectate",
 		Default = false,
@@ -1034,12 +965,9 @@ do
 			config.Visuals.Spectate.Value = Value
 		end
 	})
-
-	--// COMBATS TAB
 	local CombatsSection = CombatsTab:AddSection({
 		Name = "Combat Options"
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Anti-Grab",
 		Default = false,
@@ -1047,7 +975,6 @@ do
 			config.Combats.AntiGrab.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Anti-Void",
 		Default = false,
@@ -1055,7 +982,6 @@ do
 			config.Combats.AntiVoid.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Anti-Far",
 		Default = false,
@@ -1063,7 +989,6 @@ do
 			config.Combats.AntiFar.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Anti-Explode",
 		Default = false,
@@ -1071,7 +996,6 @@ do
 			config.Combats.AntiExplode.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Strong Anti-Grab",
 		Default = false,
@@ -1079,7 +1003,6 @@ do
 			config.Combats.StrAntiGrab.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Auto Extinguisher",
 		Default = false,
@@ -1087,7 +1010,6 @@ do
 			config.Combats.Extinguisher.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Invisible Line",
 		Default = false,
@@ -1095,7 +1017,6 @@ do
 			config.Combats.InvisLine.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Super Strength",
 		Default = false,
@@ -1103,7 +1024,6 @@ do
 			config.Combats.SuperStrength.Value = Value
 		end
 	})
-
 	CombatsTab:AddSlider({
 		Name = "Super Strength Power",
 		Min = 0,
@@ -1116,7 +1036,6 @@ do
 			config.Combats.SuperStrength.Power.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Infinite Line",
 		Default = false,
@@ -1124,11 +1043,9 @@ do
 			config.Combats.InfLine.Value = Value
 		end
 	})
-
 	local RevengeSection = CombatsTab:AddSection({
 		Name = "Revenge Options"
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Revenge: Void",
 		Default = false,
@@ -1136,7 +1053,6 @@ do
 			config.Combats.Revenge.Void.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Revenge: Kill",
 		Default = false,
@@ -1144,7 +1060,6 @@ do
 			config.Combats.Revenge.Kill.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Revenge: Poison",
 		Default = false,
@@ -1152,7 +1067,6 @@ do
 			config.Combats.Revenge.Poison.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Revenge: Ragdoll",
 		Default = false,
@@ -1160,7 +1074,6 @@ do
 			config.Combats.Revenge.Ragdoll.Value = Value
 		end
 	})
-
 	CombatsTab:AddToggle({
 		Name = "Revenge: Death",
 		Default = false,
@@ -1168,11 +1081,9 @@ do
 			config.Combats.Revenge.Death.Value = Value
 		end
 	})
-
 	local AimBotSection = CombatsTab:AddSection({
 		Name = "AimBot"
 	})
-
 	CombatsTab:AddToggle({
 		Name = "AimBot",
 		Default = false,
@@ -1180,7 +1091,6 @@ do
 			config.Combats.AimBot.Value = Value
 		end
 	})
-
 	CombatsTab:AddSlider({
 		Name = "AimBot Radius",
 		Min = 0,
@@ -1193,7 +1103,6 @@ do
 			config.Combats.AimBot.Radius.Value = Value
 		end
 	})
-
 	CombatsTab:AddDropdown({
 		Name = "AimBot Part",
 		Default = "Torso",
@@ -1202,12 +1111,9 @@ do
 			config.Combats.AimBot.Part.Value = Value
 		end
 	})
-
-	--// AURAS TAB
 	local AurasSection = AurasTab:AddSection({
 		Name = "Aura Options"
 	})
-
 	AurasTab:AddToggle({
 		Name = "Void Aura",
 		Default = false,
@@ -1215,7 +1121,6 @@ do
 			config.Auras.VoidAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Kill Aura",
 		Default = false,
@@ -1223,7 +1128,6 @@ do
 			config.Auras.KillAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Poison Aura",
 		Default = false,
@@ -1231,7 +1135,6 @@ do
 			config.Auras.PoisonAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Ragdoll Aura",
 		Default = false,
@@ -1239,7 +1142,6 @@ do
 			config.Auras.RagdollAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Death Aura",
 		Default = false,
@@ -1247,7 +1149,6 @@ do
 			config.Auras.DeathAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Fire Aura",
 		Default = false,
@@ -1255,7 +1156,6 @@ do
 			config.Auras.FireAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Anchor Aura",
 		Default = false,
@@ -1263,7 +1163,6 @@ do
 			config.Auras.AnchorAura.Value = Value
 		end
 	})
-
 	AurasTab:AddToggle({
 		Name = "Noclip Aura",
 		Default = false,
@@ -1271,12 +1170,9 @@ do
 			config.Auras.NoclipAura.Value = Value
 		end
 	})
-
-	--// GRABS TAB
 	local GrabsSection = GrabsTab:AddSection({
 		Name = "Grab Options"
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Void Grab",
 		Default = false,
@@ -1284,7 +1180,6 @@ do
 			config.Grabs.VoidGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Kill Grab",
 		Default = false,
@@ -1292,7 +1187,6 @@ do
 			config.Grabs.KillGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Poison Grab",
 		Default = false,
@@ -1300,7 +1194,6 @@ do
 			config.Grabs.PoisonGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Ragdoll Grab",
 		Default = false,
@@ -1308,7 +1201,6 @@ do
 			config.Grabs.RagdollGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Death Grab",
 		Default = false,
@@ -1316,7 +1208,6 @@ do
 			config.Grabs.DeathGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Anchor Grab",
 		Default = false,
@@ -1324,7 +1215,6 @@ do
 			config.Grabs.AnchorGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Kick Grab",
 		Default = false,
@@ -1332,7 +1222,6 @@ do
 			config.Grabs.KickGrab.Value = Value
 		end
 	})
-
 	GrabsTab:AddToggle({
 		Name = "Noclip Grab",
 		Default = false,
@@ -1340,12 +1229,9 @@ do
 			config.Grabs.NoclipGrab.Value = Value
 		end
 	})
-
-	--// MISCS TAB
 	local MiscsSection = MiscsTab:AddSection({
 		Name = "Miscellaneous Options"
 	})
-
 	MiscsTab:AddToggle({
 		Name = "Control",
 		Default = false,
@@ -1364,7 +1250,6 @@ do
 			end
 		end
 	})
-
 	MiscsTab:AddToggle({
 		Name = "Ocean Walk",
 		Default = false,
@@ -1377,14 +1262,12 @@ do
 			end
 		end
 	})
-
 	MiscsTab:AddButton({
 		Name = "Safespot",
 		Callback = function()
 			Safespot()
 		end
 	})
-
 	MiscsTab:AddToggle({
 		Name = "Anti-Lag",
 		Default = false,
@@ -1393,7 +1276,6 @@ do
 			p.Enabled = not Value
 		end
 	})
-
 	MiscsTab:AddToggle({
 		Name = "Anti-Sticky (NetworkOwner)",
 		Default = false,
@@ -1402,7 +1284,6 @@ do
 			p.Enabled = not Value
 		end
 	})
-
 	MiscsTab:AddToggle({
 		Name = "NetworkOwner-Aura",
 		Default = false,
@@ -1410,7 +1291,6 @@ do
 			config.Miscs.NWOAura.Value = Value
 		end
 	})
-
 	MiscsTab:AddToggle({
 		Name = "No Typing",
 		Default = false,
@@ -1418,7 +1298,6 @@ do
 			config.Miscs.NoTyping.Value = Value
 		end
 	})
-
 	MiscsTab:AddToggle({
 		Name = "Anti-Kick Disabler",
 		Default = false,
@@ -1426,12 +1305,9 @@ do
 			config.Miscs.AntiKickDisabler.Value = Value
 		end
 	})
-
-	--// BLOBMAN TAB
 	local BlobmanSection = BlobmanTab:AddSection({
 		Name = "Blobman Options"
 	})
-
 	BlobmanTab:AddTextbox({
 		Name = "Target Player",
 		Default = getLocalPlayer().Name,
@@ -1440,7 +1316,6 @@ do
 			config.Blobman.Target.Value = Value
 		end
 	})
-
 	BlobmanTab:AddDropdown({
 		Name = "Arm Side",
 		Default = "Left",
@@ -1449,14 +1324,12 @@ do
 			config.Blobman.ArmSide.Value = Value
 		end
 	})
-
 	BlobmanTab:AddButton({
 		Name = "Spawn Blobman",
 		Callback = function()
 			spawnBlobman()
 		end
 	})
-
 	BlobmanTab:AddButton({
 		Name = "OP-Blobman",
 		Callback = function()
@@ -1482,7 +1355,6 @@ do
 				task.wait(1.25)
 				destroyToy(Toy)
 				task.wait(.1)
-
 				local Toy = spawntoy("YouDecoy", getLocalRoot().CFrame)
 				SetNetworkOwner(Toy.HumanoidRootPart)
 				Toy.HumanoidRootPart.CFrame = blob.LeftDetector.CFrame
@@ -1495,7 +1367,6 @@ do
 			getLocalRoot().CFrame = pos
 		end
 	})
-
 	BlobmanTab:AddToggle({
 		Name = "Noclip",
 		Default = false,
@@ -1503,7 +1374,6 @@ do
 			config.Blobman.Noclip.Value = Value
 		end
 	})
-
 	BlobmanTab:AddButton({
 		Name = "Bring",
 		Callback = function()
@@ -1532,7 +1402,6 @@ do
 			end
 		end
 	})
-
 	BlobmanTab:AddButton({
 		Name = "Lock (OP Blobman)",
 		Callback = function()
@@ -1549,7 +1418,6 @@ do
 			end)
 		end
 	})
-
 	BlobmanTab:AddToggle({
 		Name = "Grab Aura",
 		Default = false,
@@ -1557,7 +1425,6 @@ do
 			config.Blobman.GrabAura.Value = Value
 		end
 	})
-
 	BlobmanTab:AddToggle({
 		Name = "Kick Aura",
 		Default = false,
@@ -1565,7 +1432,6 @@ do
 			config.Blobman.KickAura.Value = Value
 		end
 	})
-
 	BlobmanTab:AddToggle({
 		Name = "Loop Kick",
 		Default = false,
@@ -1573,7 +1439,6 @@ do
 			config.Blobman.LoopKick.Value = Value
 		end
 	})
-
 	BlobmanTab:AddToggle({
 		Name = "Loop Kick All",
 		Default = false,
@@ -1581,12 +1446,9 @@ do
 			config.Blobman.LoopKickAll.Value = Value
 		end
 	})
-
-	--// SNIPES TAB
 	local SnipesSection = SnipesTab:AddSection({
 		Name = "Snipe Options"
 	})
-
 	SnipesTab:AddTextbox({
 		Name = "Target Player",
 		Default = "",
@@ -1595,7 +1457,6 @@ do
 			config.Snipes.Target.Value = Value
 		end
 	})
-
 	SnipesTab:AddToggle({
 		Name = "Loop Void",
 		Default = false,
@@ -1603,7 +1464,6 @@ do
 			config.Snipes.LoopVoid.Value = Value
 		end
 	})
-
 	SnipesTab:AddToggle({
 		Name = "Loop Kill",
 		Default = false,
@@ -1611,7 +1471,6 @@ do
 			config.Snipes.LoopKill.Value = Value
 		end
 	})
-
 	SnipesTab:AddToggle({
 		Name = "Loop Poison",
 		Default = false,
@@ -1619,7 +1478,6 @@ do
 			config.Snipes.LoopPoison.Value = Value
 		end
 	})
-
 	SnipesTab:AddToggle({
 		Name = "Loop Ragdoll",
 		Default = false,
@@ -1627,7 +1485,6 @@ do
 			config.Snipes.LoopRagdoll.Value = Value
 		end
 	})
-
 	SnipesTab:AddToggle({
 		Name = "Loop Death",
 		Default = false,
@@ -1635,12 +1492,9 @@ do
 			config.Snipes.LoopDeath.Value = Value
 		end
 	})
-
-	--// TROLLS TAB
 	local TrollsSection = TrollsTab:AddSection({
 		Name = "Troll Options"
 	})
-
 	TrollsTab:AddToggle({
 		Name = "Loud All",
 		Default = false,
@@ -1648,7 +1502,6 @@ do
 			config.Trolls.LoudAll.Value = Value
 		end
 	})
-
 	TrollsTab:AddToggle({
 		Name = "Lag Server",
 		Default = false,
@@ -1656,7 +1509,6 @@ do
 			config.Trolls.Lag.Value = Value
 		end
 	})
-
 	TrollsTab:AddToggle({
 		Name = "Ping Server",
 		Default = false,
@@ -1664,7 +1516,6 @@ do
 			config.Trolls.Ping.Value = Value
 		end
 	})
-
 	TrollsTab:AddToggle({
 		Name = "Server Destroyer",
 		Default = false,
@@ -1675,7 +1526,6 @@ do
 			end
 		end
 	})
-
 	TrollsTab:AddToggle({
 		Name = "Chaos Line",
 		Default = false,
@@ -1683,12 +1533,9 @@ do
 			config.Trolls.ChaosLine.Value = Value
 		end
 	})
-
-	--// SETTINGS TAB
 	local SettingsSection = SettingsTab:AddSection({
 		Name = "General Settings"
 	})
-
 	SettingsTab:AddToggle({
 		Name = "Only Target Players",
 		Default = false,
@@ -1696,7 +1543,6 @@ do
 			config.Settings.OnlyPlayer.Value = Value
 		end
 	})
-
 	SettingsTab:AddToggle({
 		Name = "Ignore Friends",
 		Default = false,
@@ -1704,7 +1550,6 @@ do
 			config.Settings.IgnoreFriend.Value = Value
 		end
 	})
-
 	SettingsTab:AddToggle({
 		Name = "Ignore Players in Plot",
 		Default = false,
@@ -1712,7 +1557,6 @@ do
 			config.Settings.IgnoreIsInPlot.Value = Value
 		end
 	})
-
 	SettingsTab:AddSlider({
 		Name = "Aura Radius",
 		Min = 0,
@@ -1725,7 +1569,6 @@ do
 			config.Settings.AuraRadius.Value = Value
 		end
 	})
-
 	SettingsTab:AddSlider({
 		Name = "AimBot Speed",
 		Min = 1,
@@ -1738,7 +1581,6 @@ do
 			config.Settings.AimBotSpeed.Value = Value
 		end
 	})
-
 	SettingsTab:AddSlider({
 		Name = "Lag Amount",
 		Min = 1,
@@ -1751,7 +1593,6 @@ do
 			config.Settings.Lag.Value = Value
 		end
 	})
-
 	SettingsTab:AddSlider({
 		Name = "Ping Amount",
 		Min = 1,
@@ -1764,7 +1605,6 @@ do
 			config.Settings.Ping.Value = Value
 		end
 	})
-
 	SettingsTab:AddDropdown({
 		Name = "Speed Hack Method",
 		Default = "CFrame",
@@ -1773,7 +1613,6 @@ do
 			config.Settings.SpeedHackMethod = { Value }
 		end
 	})
-
 	SettingsTab:AddDropdown({
 		Name = "Fly Method",
 		Default = "Velocity",
@@ -1782,7 +1621,6 @@ do
 			config.Settings.FlyMethod = { Value }
 		end
 	})
-
 	SettingsTab:AddToggle({
 		Name = "Auto Speed Hack Method",
 		Default = false,
@@ -1790,7 +1628,6 @@ do
 			config.Settings.AutoSpeedHackMethod.Value = Value
 		end
 	})
-
 	SettingsTab:AddToggle({
 		Name = "Debug Mode",
 		Default = false,
@@ -1798,8 +1635,6 @@ do
 			config.Settings.DebugMode.Value = Value
 		end
 	})
-
-	--// MAIN LOOP
 	local AuraTimer = 0
 	local espTimer = 0
 	local AntiDetectTimer = 0
@@ -1808,7 +1643,6 @@ do
 	local BlobmanTimer = 0
 	local SnipeTimer = 0
 	local TrollTimer = 0
-
 	loop.Event:Connect(function(dt)
 		AuraTimer += dt
 		espTimer += dt
@@ -1818,10 +1652,7 @@ do
 		BlobmanTimer += dt
 		SnipeTimer += dt
 		TrollTimer += dt
-
 		if (not getLocalChar() or not getLocalRoot() or not getLocalHum()) then return end
-
-		--// MOVEMENTS
 		if (config.Movements.CrouchSpeedHack.Loop) then
 			getLocalHum().WalkSpeed = config.Movements.CrouchSpeedHack.Value
 		end
@@ -1863,8 +1694,6 @@ do
 				end
 			end
 		end
-
-		--// PLAYERS
 		if (AntiDetectTimer >= 1) then
 			if (config.Players.AntiDetect.Value) then
 				AntiDetect()
@@ -1909,8 +1738,6 @@ do
 		if (config.Players.AntiGucci.Value) then
 			ragdoll()
 		end
-
-		--// VISUALS
 		if (espTimer >= 1) then
 			updateESP()
 			if (config.Visuals.ESP.Value) then
@@ -1936,8 +1763,6 @@ do
 		else
 			getLocalPlayer().CameraMode = Enum.CameraMode.LockFirstPerson
 		end
-
-		--// COMBATS
 		do
 			if (getLocalChar()) then
 				local head = get(getLocalChar(), "Head")
@@ -1960,7 +1785,6 @@ do
 							getLocalRoot().Anchored = false
 						end
 					end)
-
 					do
 						if (target) then
 							local character = target.Character
@@ -2021,14 +1845,12 @@ do
 				end
 			end
 		end
-
 		if (config.Combats.StrAntiGrab.Value and getLocalHum() and getLocalHum().Sit) then
 			service.ReplicatedStorage.CharacterEvents.Struggle:FireServer(getLocalPlayer())
 			service.ReplicatedStorage.GameCorrectionEvents.StopAllVelocity:FireServer()
 			getLocalHum().Sit = false
 			SetNetworkOwner(getLocalRoot())
 		end
-
 		if (ExtinguisherTimer >= 1) then
 			if (config.Combats.Extinguisher.Value) then
 				if (getLocalChar() and get(getLocalHum(), "FireDebounce").Value) then
@@ -2048,7 +1870,6 @@ do
 			end
 			ExtinguisherTimer = 0
 		end
-
 		if (AuraTimer >= .5) then
 			if (not getLocalRoot()) then return end
 			for _, v in ipairs(GetNearParts(getLocalRoot().Position, config.Settings.AuraRadius.Value)) do
@@ -2122,7 +1943,6 @@ do
 			end
 			AuraTimer = 0
 		end
-
 		if (config.Combats.AntiVoid.Value) then
 			workspace.FallenPartsDestroyHeight = 0 / 0
 			local rad = math.huge
@@ -2146,7 +1966,6 @@ do
 				end
 			end
 		end
-
 		if (config.Combats.AntiFar.Value) then
 			if (not IsInRadius(getLocalRoot(), Vector3.zero, 4096)) then
 				service.ReplicatedStorage.CharacterEvents.Struggle:FireServer()
@@ -2164,11 +1983,9 @@ do
 				})
 			end
 		end
-
 		if (config.Combats.InvisLine.Value) then
 			service.ReplicatedStorage.GrabEvents.DestroyGrabLine:FireServer()
 		end
-
 		if (config.Combats.AimBot.Value) then
 			local nearestPlayer = nil
 			local nearestDistance = config.Combats.AimBot.Radius.Value
@@ -2188,8 +2005,6 @@ do
 				workspace.CurrentCamera.CFrame = CFrame.lookAt(workspace.CurrentCamera.CFrame.Position, nearestPlayer.Position)
 			end
 		end
-
-		--// GRABS
 		if getLocalPlayer().IsHolding.Value then
 			local grabbed = nil
 			for _, v in pairs(workspace:GetDescendants()) do
@@ -2236,8 +2051,6 @@ do
 				end
 			end
 		end
-
-		--// BLOBMAN
 		if (BlobmanTimer >= 0.5) then
 			local blob = getBlobman()
 			if blob then
@@ -2292,8 +2105,6 @@ do
 			end
 			BlobmanTimer = 0
 		end
-
-		--// SNIPES
 		if (SnipeTimer >= 2) then
 			local t = getPlayerFromName(config.Snipes.Target.Value)
 			if t and t.Character then
@@ -2335,8 +2146,6 @@ do
 			end
 			SnipeTimer = 0
 		end
-
-		--// TROLLS
 		if (TrollTimer >= 0.1) then
 			if config.Trolls.Lag.Value then
 				lag(config.Settings.Lag.Value)
@@ -2346,7 +2155,6 @@ do
 			end
 			TrollTimer = 0
 		end
-
 		if config.Trolls.ServerDestroyer.Value then
 			for _, player in ipairs(service.Players:GetPlayers()) do
 				if player ~= getLocalPlayer() and player.Character then
@@ -2358,7 +2166,6 @@ do
 				end
 			end
 		end
-
 		if config.Trolls.ChaosLine.Value then
 			for _, player in ipairs(service.Players:GetPlayers()) do
 				if player ~= getLocalPlayer() and player.Character then
@@ -2369,8 +2176,6 @@ do
 				end
 			end
 		end
-
-		--// MISCS
 		if config.Miscs.Control.Value then
 			if getLocalPlayer().IsHolding.Value then
 				for _, v in pairs(workspace:GetDescendants()) do
@@ -2385,7 +2190,6 @@ do
 				end
 			end
 		end
-
 		if config.Miscs.NWOAura.Value then
 			for _, v in ipairs(GetNearParts(getLocalRoot().Position, config.Settings.AuraRadius.Value)) do
 				if (not v.Anchored and not v:IsDescendantOf(getLocalChar())) then
@@ -2393,7 +2197,6 @@ do
 				end
 			end
 		end
-
 		if config.Miscs.NoTyping.Value then
 			local chatBar = getLocalPlayer().PlayerGui:FindFirstChild("Chat")
 			if chatBar then
@@ -2401,7 +2204,6 @@ do
 			end
 		end
 	end)
-
 	VoidNexusLib:Init()
 	VoidNexusLib:MakeNotification({
 		Name = "Void Nexus",
