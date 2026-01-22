@@ -88,12 +88,9 @@ function VoidNexusLib:IsRunning()
 end
 
 local function AddConnection(Signal, Function)
-	if (not VoidNexusLib:IsRunning()) then
-		return
-	end
-	local SignalConnect = Signal:Connect(Function)
-	table.insert(VoidNexusLib.Connections, SignalConnect)
-	return SignalConnect
+    local SignalConnect = Signal:Connect(Function)
+    table.insert(VoidNexusLib.Connections, SignalConnect)
+    return SignalConnect
 end
 
 task.spawn(function()
@@ -305,7 +302,7 @@ CreateElement("Label", function(Text, Size)
 end)
 
 CreateElement("Button", function()
-	return Create("TextButton", {Text = "", BackgroundTransparency = 1, BorderSizePixel = 0})
+	return Create("TextButton", {Text = "", BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 5})
 end)
 
 CreateElement("Image", function(Image)
@@ -492,16 +489,16 @@ function VoidNexusLib:MakeWindow(WindowConfig)
 			SetChildren(SetProps(MakeElement("TFrame"), {Size = UDim2.new(1, 0, 0, 20), Parent = Container}), {AddThemeObject(SetProps(MakeElement("Label", SectionConfig.Name or "Section", 13), {Size = UDim2.new(1, 0, 1, 0), Font = Enum.Font.GothamBold}), "TextDark")})
 		end
 
-		function ElementFunction:AddButton(ButtonConfig)
-			local Button = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 6), {Size = UDim2.new(1, 0, 0, 35), Parent = Container}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0)}), AddThemeObject(SetProps(MakeElement("Label", ButtonConfig.Name or "Button", 14), {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 10, 0, 0)}), "Text")}), "Second")
-			AddConnection(Button.TextButton.MouseButton1Click, ButtonConfig.Callback or function() end)
-		end
+			function ElementFunction:AddButton(ButtonConfig)
+				local Button = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 6), {Size = UDim2.new(1, 0, 0, 35), Parent = Container}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0), Name = "Btn"}), AddThemeObject(SetProps(MakeElement("Label", ButtonConfig.Name or "Button", 14), {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 10, 0, 0)}), "Text")}), "Second")
+				AddConnection(Button.Btn.MouseButton1Click, ButtonConfig.Callback or function() end)
+			end
 
-		function ElementFunction:AddToggle(ToggleConfig)
-			local Toggled = ToggleConfig.Default or false
-			local Toggle = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 6), {Size = UDim2.new(1, 0, 0, 35), Parent = Container}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0)}), AddThemeObject(SetProps(MakeElement("Label", ToggleConfig.Name or "Toggle", 14), {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 10, 0, 0)}), "Text"), AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(1, -28, 0.5, -9)}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("Frame", Color3.fromRGB(255, 255, 255)), {Size = UDim2.new(0, 10, 0, 10), Position = UDim2.new(0.5, -5, 0.5, -5), Visible = Toggled, Name = "Check"}, {MakeElement("Corner", 0, 2)})}), "Main")}), "Second")
-			AddConnection(Toggle.TextButton.MouseButton1Click, function() Toggled = not Toggled; Toggle.Frame.Check.Visible = Toggled; if ToggleConfig.Callback then ToggleConfig.Callback(Toggled) end end)
-		end
+			function ElementFunction:AddToggle(ToggleConfig)
+				local Toggled = ToggleConfig.Default or false
+				local Toggle = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 6), {Size = UDim2.new(1, 0, 0, 35), Parent = Container}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0), Name = "Btn"}), AddThemeObject(SetProps(MakeElement("Label", ToggleConfig.Name or "Toggle", 14), {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 10, 0, 0)}), "Text"), AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(1, -28, 0.5, -9)}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("Frame", Color3.fromRGB(255, 255, 255)), {Size = UDim2.new(0, 10, 0, 10), Position = UDim2.new(0.5, -5, 0.5, -5), Visible = Toggled, Name = "Check"}, {MakeElement("Corner", 0, 2)})}), "Main")}), "Second")
+				AddConnection(Toggle.Btn.MouseButton1Click, function() Toggled = not Toggled; Toggle.Frame.Check.Visible = Toggled; if ToggleConfig.Callback then ToggleConfig.Callback(Toggled) end end)
+			end
 
 		function ElementFunction:AddTextbox(TextboxConfig)
 			local Textbox = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 6), {Size = UDim2.new(1, 0, 0, 35), Parent = Container}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), AddThemeObject(SetProps(MakeElement("Label", TextboxConfig.Name or "Textbox", 14), {Size = UDim2.new(0, 100, 1, 0), Position = UDim2.new(0, 10, 0, 0)}), "Text"), AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 4), {Size = UDim2.new(1, -120, 0, 25), Position = UDim2.new(0, 110, 0.5, -12)}), {AddThemeObject(MakeElement("Stroke"), "Stroke"), SetProps(MakeElement("TextBox", TextboxConfig.Default or "", 13), {Size = UDim2.new(1, -10, 1, 0), Position = UDim2.new(0, 5, 0, 0), Name = "Input"})}), "Main")}), "Second")
